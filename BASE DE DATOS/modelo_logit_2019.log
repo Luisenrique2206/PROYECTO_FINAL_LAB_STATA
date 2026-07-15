@@ -1,0 +1,309 @@
+-------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\ACER\Desktop\STATA 2026\FINAL\BASE DE DATOS\modelo_logit_2019.log
+  log type:  text
+ opened on:  14 Jul 2026, 20:09:30
+
+. 
+end of do-file
+
+. do "C:\Users\ACER\AppData\Local\Temp\STD6818_000000.tmp"
+
+. clear all
+
+. set more off
+
+. 
+. use "C:\Users\ACER\Desktop\STATA 2026\FINAL\BASE DE DATOS\base_modelo_analfabetismo_2019.dta", clear
+
+. 
+. 
+. ************************************************************
+. * 1. DESCRIPTIVOS
+. ************************************************************
+. 
+. count if !missing(analfabeto)
+  89,040
+
+. 
+. tab analfabeto [iw=factora07]
+
+              analfabeto |      Freq.     Percent        Cum.
+-------------------------+-----------------------------------
+    Sabe leer y escribir | 22655482.2       94.45       94.45
+No sabe leer ni escribir |  1,331,992        5.55      100.00
+-------------------------+-----------------------------------
+                   Total | 23987473.9      100.00
+
+. 
+. tab analfabeto mujer [iw=factora07], row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |  Sexo de la persona
+           analfabeto |    Hombre      Mujer |     Total
+----------------------+----------------------+----------
+ Sabe leer y escribir |11,618,252 11,037,230 |22,655,482 
+                      |     51.28      48.72 |    100.00 
+----------------------+----------------------+----------
+No sabe leer ni escri |   354,863 977,128.72 | 1331991.7 
+                      |     26.64      73.36 |    100.00 
+----------------------+----------------------+----------
+                Total |11,973,115 12,014,359 |23,987,474 
+                      |     49.91      50.09 |    100.00 
+
+. tab analfabeto rural [iw=factora07], row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |  Área de residencia
+           analfabeto |    Urbano      Rural |     Total
+----------------------+----------------------+----------
+ Sabe leer y escribir |18,690,353  3965129.3 |22,655,482 
+                      |     82.50      17.50 |    100.00 
+----------------------+----------------------+----------
+No sabe leer ni escri | 660,694.4  671,297.3 | 1331991.7 
+                      |     49.60      50.40 |    100.00 
+----------------------+----------------------+----------
+                Total |19,351,047  4636426.6 |23,987,474 
+                      |     80.67      19.33 |    100.00 
+
+. tab analfabeto pobre [iw=factora07], row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      | Condición de pobreza
+                      |       monetaria
+           analfabeto |  No pobre      Pobre |     Total
+----------------------+----------------------+----------
+ Sabe leer y escribir |18,964,783  3690699.1 |22,655,482 
+                      |     83.71      16.29 |    100.00 
+----------------------+----------------------+----------
+No sabe leer ni escri | 828,709.9  503,281.7 | 1331991.7 
+                      |     62.22      37.78 |    100.00 
+----------------------+----------------------+----------
+                Total |19,793,493  4193980.8 |23,987,474 
+                      |     82.52      17.48 |    100.00 
+
+. 
+. 
+. ************************************************************
+. * 2. MODELO 1
+. ************************************************************
+. 
+. logit analfabeto i.mujer c.edad c.edad#c.edad ///
+>     if !missing(analfabeto), vce(robust)
+
+Iteration 0:   log pseudolikelihood = -26876.377  
+Iteration 1:   log pseudolikelihood = -24019.071  
+Iteration 2:   log pseudolikelihood = -22274.593  
+Iteration 3:   log pseudolikelihood = -22224.918  
+Iteration 4:   log pseudolikelihood = -22224.818  
+Iteration 5:   log pseudolikelihood = -22224.818  
+
+Logistic regression                             Number of obs     =     89,040
+                                                Wald chi2(3)      =    6533.78
+                                                Prob > chi2       =     0.0000
+Log pseudolikelihood = -22224.818               Pseudo R2         =     0.1731
+
+-------------------------------------------------------------------------------
+              |               Robust
+   analfabeto |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+        mujer |
+       Mujer  |   1.252564   .0286446    43.73   0.000     1.196421    1.308706
+         edad |   .0746499   .0035806    20.85   0.000     .0676321    .0816678
+              |
+c.edad#c.edad |   -.000185   .0000318    -5.82   0.000    -.0002473   -.0001226
+              |
+        _cons |  -6.394134   .1019682   -62.71   0.000    -6.593988    -6.19428
+-------------------------------------------------------------------------------
+
+. 
+. estimates store m1
+
+. 
+. 
+. ************************************************************
+. * 3. MODELO 2
+. ************************************************************
+. 
+. logit analfabeto i.mujer c.edad c.edad#c.edad ///
+>     i.rural i.pobre ///
+>     if !missing(analfabeto), vce(robust)
+
+Iteration 0:   log pseudolikelihood = -26876.377  
+Iteration 1:   log pseudolikelihood = -22045.496  
+Iteration 2:   log pseudolikelihood = -19475.866  
+Iteration 3:   log pseudolikelihood = -19344.099  
+Iteration 4:   log pseudolikelihood = -19343.447  
+Iteration 5:   log pseudolikelihood = -19343.447  
+
+Logistic regression                             Number of obs     =     89,040
+                                                Wald chi2(5)      =    8874.20
+                                                Prob > chi2       =     0.0000
+Log pseudolikelihood = -19343.447               Pseudo R2         =     0.2803
+
+-------------------------------------------------------------------------------
+              |               Robust
+   analfabeto |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+        mujer |
+       Mujer  |   1.454537   .0316504    45.96   0.000     1.392504    1.516571
+         edad |   .0820383   .0038225    21.46   0.000     .0745464    .0895303
+              |
+c.edad#c.edad |  -.0001992   .0000339    -5.87   0.000    -.0002657   -.0001326
+              |
+        rural |
+       Rural  |   1.564903   .0293744    53.27   0.000      1.50733    1.622475
+              |
+        pobre |
+       Pobre  |   1.038172   .0309684    33.52   0.000     .9774746    1.098869
+        _cons |  -7.940461   .1156754   -68.64   0.000     -8.16718   -7.713741
+-------------------------------------------------------------------------------
+
+. 
+. estimates store m2
+
+. 
+. 
+. ************************************************************
+. * 4. MODELO 3
+. ************************************************************
+. 
+. logit analfabeto i.mujer c.edad c.edad#c.edad ///
+>     i.rural i.pobre c.ln_ingreso_pc ///
+>     if !missing(analfabeto), vce(robust)
+
+Iteration 0:   log pseudolikelihood = -26876.377  
+Iteration 1:   log pseudolikelihood = -21676.283  
+Iteration 2:   log pseudolikelihood = -18903.332  
+Iteration 3:   log pseudolikelihood = -18740.106  
+Iteration 4:   log pseudolikelihood = -18739.065  
+Iteration 5:   log pseudolikelihood = -18739.065  
+
+Logistic regression                             Number of obs     =     89,040
+                                                Wald chi2(6)      =    9220.44
+                                                Prob > chi2       =     0.0000
+Log pseudolikelihood = -18739.065               Pseudo R2         =     0.3028
+
+-------------------------------------------------------------------------------
+              |               Robust
+   analfabeto |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+        mujer |
+       Mujer  |   1.480572   .0324093    45.68   0.000     1.417051    1.544093
+         edad |   .0874586   .0039406    22.19   0.000     .0797352    .0951819
+              |
+c.edad#c.edad |  -.0002127   .0000347    -6.12   0.000    -.0002807   -.0001446
+              |
+        rural |
+       Rural  |   1.110752   .0328615    33.80   0.000     1.046344    1.175159
+              |
+        pobre |
+       Pobre  |   .3776171   .0364944    10.35   0.000     .3060894    .4491448
+ln_ingreso_pc |  -.8110947   .0238495   -34.01   0.000    -.8578389   -.7643505
+        _cons |  -2.779906   .1855365   -14.98   0.000    -3.143551   -2.416261
+-------------------------------------------------------------------------------
+
+. 
+. estimates store m3
+
+. 
+. 
+. ************************************************************
+. * 5. EFECTOS MARGINALES
+. ************************************************************
+. 
+. margins, dydx(mujer rural pobre ln_ingreso_pc)
+
+Average marginal effects                        Number of obs     =     89,040
+Model VCE    : Robust
+
+Expression   : Pr(analfabeto), predict()
+dy/dx w.r.t. : 1.mujer 1.rural 1.pobre ln_ingreso_pc
+
+-------------------------------------------------------------------------------
+              |            Delta-method
+              |      dy/dx   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+        mujer |
+       Mujer  |   .0862977   .0016249    53.11   0.000      .083113    .0894824
+              |
+        rural |
+       Rural  |   .0709358    .002151    32.98   0.000     .0667198    .0751518
+              |
+        pobre |
+       Pobre  |   .0243572   .0024814     9.82   0.000     .0194939    .0292206
+ln_ingreso_pc |   -.049501    .001458   -33.95   0.000    -.0523585   -.0466434
+-------------------------------------------------------------------------------
+Note: dy/dx for factor levels is the discrete change from the base level.
+
+. 
+. 
+. ************************************************************
+. * 6. COMPARACIÓN DE MODELOS
+. ************************************************************
+. 
+. estimates table m1 m2 m3, ///
+>     b(%9.4f) se(%9.4f) stats(N ll)
+
+--------------------------------------------------
+    Variable |    m1          m2          m3      
+-------------+------------------------------------
+       mujer |
+      Mujer  |    1.2526      1.4545      1.4806  
+             |    0.0286      0.0317      0.0324  
+             |
+        edad |    0.0746      0.0820      0.0875  
+             |    0.0036      0.0038      0.0039  
+             |
+      c.edad#|
+      c.edad |   -0.0002     -0.0002     -0.0002  
+             |    0.0000      0.0000      0.0000  
+             |
+       rural |
+      Rural  |                1.5649      1.1108  
+             |                0.0294      0.0329  
+             |
+       pobre |
+      Pobre  |                1.0382      0.3776  
+             |                0.0310      0.0365  
+             |
+ln_ingreso~c |                           -0.8111  
+             |                            0.0238  
+       _cons |   -6.3941     -7.9405     -2.7799  
+             |    0.1020      0.1157      0.1855  
+-------------+------------------------------------
+           N |     89040       89040       89040  
+          ll | -2.22e+04   -1.93e+04   -1.87e+04  
+--------------------------------------------------
+                                      legend: b/se
+
+. 
+. 
+. ************************************************************
+. * 7. CERRAR LOG
+. ************************************************************
+. 
+. log close
+      name:  <unnamed>
+       log:  C:\Users\ACER\Desktop\STATA 2026\FINAL\BASE DE DATOS\modelo_logit_2019.log
+  log type:  text
+ closed on:  14 Jul 2026, 20:10:07
+-------------------------------------------------------------------------------------------------------------------
