@@ -384,9 +384,9 @@ do "08_modelos_svy.do"
 
 | Participante | Contribución general |
 |:---|:---|
-| **Lileya Manzano** | Procesamiento, revisión y documentación |
+| **Lileya Manzano** | Procesamiento, estimación y documentación |
 | **Piero Laime** | Procesamiento, revisión y documentación |
-| **Luis Puicón** | Procesamiento, estimación y documentación |
+| **Luis Puicón** | Procesamiento, revisión y documentación |
 | **Melissa Quispe** | Procesamiento, revisión y documentación |
 | **Andres Avila** | Procesamiento, revisión y documentación |
 
@@ -412,8 +412,5 @@ Además del resultado econométrico, el repositorio documenta un flujo reproduci
 
 <br>
 
-![GitHub last commit](https://img.shields.io/github/last-commit/aotero1703/PROYECTO_FINAL_LAB_STATA?style=flat-square)
-![GitHub repo size](https://img.shields.io/github/repo-size/aotero1703/PROYECTO_FINAL_LAB_STATA?style=flat-square)
-![GitHub contributors](https://img.shields.io/github/contributors/aotero1703/PROYECTO_FINAL_LAB_STATA?style=flat-square)
 
 </div>
