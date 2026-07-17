@@ -7,7 +7,7 @@ clear all
 set more off
 set varabbrev off
 
-global root "C:\Users\ACER\Desktop\STATA 2026\FINAL"
+global root "C:\Users\ACER\Desktop\STATA 2026\FINAL" // Cambiar esta ruta por la ruta local de tu equipo
 
 
 ************************************************************
